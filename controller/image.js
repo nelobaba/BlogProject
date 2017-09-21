@@ -56,7 +56,10 @@ router.get('/', function(req, res){
     }
 
 
-    res.render('image', viewModel);
+    sidebar(viewModel, function(viewModel) {    
+        res.render('image', viewModel); 
+    });
+
 });
 
 
