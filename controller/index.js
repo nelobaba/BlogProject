@@ -47,7 +47,10 @@ router.get('/',  function(req, res){
 		]
 	};
 	
-	res.render('index', viewModel);
+	sidebar(viewModel, function(viewModel) {    
+		res.render('index', viewModel); 
+	});
+	
 });
 
 module.exports = router;
