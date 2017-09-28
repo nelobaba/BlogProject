@@ -1,57 +1,35 @@
 var express = require('express');
 var router = express.Router();
+var sidebar = require('../helpers/sidebar');
+var ImageModel = require('../models').Image;
+var app = express();
+
 
 router.get('/',  function(req, res){
 	var viewModel = {    
-		images: [  
-
-		   {            
-		   	uniqueId:       1,            
-		   	title:          'Sample Image 1',            
-		   	description:    '',            
-		   	filename:       'sample1.jpg',            
-		   	views:          0,            
-		   	likes:          0,            
-		   	timestamp:      Date.now        
-		   }, 
-
-		   {            
-		   	uniqueId:       2,            
-		   	title:          'Sample Image 2',            
-		   	description:    '',            
-		   	filename:       'sample2.jpg',            
-		   	views:          0,            
-		   	likes:          0,            
-		   	timestamp:      Date.now        
-		   }, 
-
-		   {            
-		   	uniqueId:       3,            
-		   	title:          'Sample Image 3',            
-		   	description:    '',            
-		   	filename:       'sample3.jpg',            
-		   	views:          0,            
-		   	likes:          0,            
-		   	timestamp:      Date.now        
-		   }, 
-
-		   {
-		   	uniqueId:       4,            
-		   	title:          'Sample Image 4',            
-		   	description:    '',            
-		   	filename:       'sample4.jpg',            
-		   	views:          0,            
-		   	likes:          0,            
-		   	timestamp:      Date.now        
-		   }    
-		]
+		images: {}
 	};
 	
+
+	/*
 	sidebar(viewModel, function(viewModel) {    
 		res.render('index', viewModel); 
 	});
-	
+	*/
+
+	ImageModel.find({}, {}, { sort: { timestamp: -1 }},  
+		 function(err, images) {     
+		    if (err) { throw err; }
+
+			viewModel.images = images;
+
+			res.render('index', viewModel); 
+		});
+
 });
+
+
+app.use('/', router); 
 
 module.exports = router;
         

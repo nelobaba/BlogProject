@@ -1,4 +1,5 @@
-var express = require('express'), 
+var express = require('express'),
+    mongoose = require('mongoose'), 
 	expressValidator = require('express-validator'),
 	session = require('express-session'),
 	flash = require('connect-flash'),      
@@ -15,6 +16,11 @@ var express = require('express'),
 	methodOverride = require('method-override'),  
 	moment = require('moment'),  
 	errorHandler = require('errorhandler');
+
+  mongoose.connect('mongodb://localhost/BlogProject'); 
+  mongoose.connection.on('open', function() {    
+    console.log('Mongoose connected.'); 
+  });
 
 
 
@@ -35,9 +41,7 @@ app.use(morgan('dev'));
 app.use(bodyParser({        
 	uploadDir:path.join(__dirname, './public/upload/temp')    
 }));  
-app.use(bodyParser.urlencoded({ 
-    extended: false;
-})); 
+app.use(bodyParser.urlencoded({ extended: false})); 
 app.use(bodyParser.json());
   
 app.use(methodOverride());    
@@ -87,6 +91,7 @@ app.get('*', function(req, res, next){
 app.use('/', routes);
 app.use('/images', images);
 app.use('/images/:image_id', images);
+app.post('/images/:image_id/like', images);
 
 //router.use('/', routes);
 
